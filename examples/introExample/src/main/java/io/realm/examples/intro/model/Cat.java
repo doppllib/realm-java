@@ -19,5 +19,5 @@ package io.realm.examples.intro.model;
 import io.realm.RealmObject;
 
 public class Cat extends RealmObject {
-    public  String name;
+    public String name;
 }

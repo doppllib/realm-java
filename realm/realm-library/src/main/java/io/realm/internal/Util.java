@@ -16,8 +16,6 @@
 
 package io.realm.internal;
 
-import android.os.Build;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -30,6 +28,8 @@ import io.realm.RealmObject;
 import io.realm.log.RealmLog;
 
 public class Util {
+
+    static native void nativeRealmInit();
 
     public static long getNativeMemUsage() {
         return nativeGetMemUsage();
@@ -87,14 +87,15 @@ public class Util {
 
     // Credit: http://stackoverflow.com/questions/2799097/how-can-i-detect-when-an-android-application-is-running-in-the-emulator
     public static boolean isEmulator() {
-        return Build.FINGERPRINT.startsWith("generic")
+        return false;
+        /*return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
                 || Build.MODEL.contains("Android SDK built for x86")
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk".equals(Build.PRODUCT);
+                || "google_sdk".equals(Build.PRODUCT);*/
     }
 
     public static boolean deleteRealm(String canonicalPath, File realmFolder, String realmFileName) {

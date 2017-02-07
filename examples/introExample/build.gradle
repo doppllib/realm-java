@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-command'
 apply plugin: 'realm-android'
+apply plugin: 'co.touchlab.doppl.gradle'
 
 android {
     compileSdkVersion rootProject.sdkVersion
@@ -25,5 +26,41 @@ android {
 
     command {
         events 2000
+    }
+}
+
+dependencies {
+    doppl 'io.realm:realm-client:2.3.0.0:doppl'
+    doppl 'io.realm:realm-annotations:2.3.0.0:doppl'
+    doppl "co.touchlab.doppl:androidbase:$dopplCoreVersion:doppl"
+    compile 'io.realm:realm-android-library:2.3.0'
+}
+
+
+dopplConfig {
+
+    copyMainOutput="/Users/kgalligan/devel-doppl/realmdoppltest/dopplframework/clientmain"
+    copyTestOutput="/Users/kgalligan/devel-doppl/realmdoppltest/dopplframework/clienttest"
+    copyDependencies true
+
+//    decompilePath="build/intermediates/transforms/RealmTransformer/debug/folders/1/1/realm/io/realm/examples/intro/model"
+    decompilePath="build/intermediates/transforms/RealmTransformer/debug/folders/1/1/realm"
+
+    decompilePattern{
+        include '**/model/**'
+        include '**/io/realm/*RealmProxy.*'
+        include '**/io/realm/*RealmProxyInterface.*'
+        include '**/io/realm/*RealmModule.*'
+        include '**/io/realm/*RealmModuleMediator.*'
+        include '**/IntroExamplePresenter.*'
+    }
+
+    translatePattern{
+        include '**/io/realm/**'
+        include '**/model/**'
+        include '**/IntroExamplePresenter.java'
+        exclude '**/MyApplication.java'
+        exclude '**/IntroExampleActivity.java'
+        exclude '**/main/java/io/realm/examples/intro/model/**'
     }
 }

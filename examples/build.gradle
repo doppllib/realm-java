@@ -1,3 +1,5 @@
+apply from: '../../dopplversions.gradle'
+
 project.ext.sdkVersion = 24
 project.ext.buildTools = '24.0.0'
 
@@ -14,6 +16,10 @@ allprojects {
             mavenLocal()
             jcenter()
             maven { url 'https://jitpack.io' }
+            ivy { url dopplIvyDeploy }
+            maven {
+                url 'https://raw.github.com/java-decompiler/mvn-repo/master'
+            }
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:2.2.0'
@@ -22,6 +28,7 @@ allprojects {
             classpath 'com.novoda:gradle-android-command-plugin:1.5.0'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
             classpath "io.realm:realm-gradle-plugin:${currentVersion}"
+            classpath "co.touchlab.doppl:gradle:"+ dopplPluginVersion
         }
     }
 
@@ -31,5 +38,9 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
+        ivy { url dopplIvyDeploy }
+        maven {
+            url 'https://raw.github.com/java-decompiler/mvn-repo/master'
+        }
     }
 }

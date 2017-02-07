@@ -32,7 +32,7 @@ public class BgPriorityCallable<T> implements Callable<T> {
     @Override
     public T call() throws Exception {
         // Moves the current Thread into the background
-        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+//        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         return callable.call();
     }
 }

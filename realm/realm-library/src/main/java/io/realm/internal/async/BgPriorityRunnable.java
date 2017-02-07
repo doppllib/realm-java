@@ -30,7 +30,7 @@ public class BgPriorityRunnable implements Runnable {
     @Override
     public void run() {
         // Moves the current Thread into the background
-        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+//        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         runnable.run();
     }
 

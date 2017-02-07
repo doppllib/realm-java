@@ -187,7 +187,8 @@ public class RealmConfiguration {
      * @throws IOException if copying the file fails.
      */
     InputStream getAssetFile() throws IOException {
-        return BaseRealm.applicationContext.getAssets().open(assetFilePath);
+        throw new UnsupportedOperationException();
+//        return BaseRealm.applicationContext.getAssets().open(assetFilePath);
     }
 
     /**

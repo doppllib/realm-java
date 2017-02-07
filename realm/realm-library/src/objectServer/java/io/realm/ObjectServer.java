@@ -17,7 +17,6 @@
 package io.realm;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 
 import io.realm.internal.Keep;
 
@@ -32,11 +31,11 @@ class ObjectServer {
     public static void init(Context context) {
         // Setup AppID
         String appId = "unknown";
-        try {
+        /*try {
             PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             appId = pi.packageName;
         } catch (Exception ignore) {
-        }
+        }*/
 
         // Configure default UserStore
         UserStore userStore = new RealmFileUserStore(context.getFilesDir().getPath());

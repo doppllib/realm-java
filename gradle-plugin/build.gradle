@@ -1,10 +1,12 @@
 buildscript {
     repositories {
         jcenter()
+        ivy { url dopplIvyDeploy }
     }
     dependencies {
         classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'doppl.fr.inria.gforge.spoon:spoon-gradle-plugin:1.0-SNAPSHOT'
     }
 }
 
@@ -23,6 +25,7 @@ props.each { key, val ->
 repositories {
     mavenLocal()
     jcenter()
+    ivy { url dopplIvyDeploy }
 }
 
 sourceCompatibility = 1.6
@@ -48,6 +51,7 @@ dependencies {
     compile "io.realm:realm-transformer:${version}"
     compile 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     provided 'com.android.tools.build:gradle:2.1.0'
+    compile('fr.inria.gforge.spoon:spoon-core:5.5.0')
 
     testCompile gradleTestKit()
     testCompile 'junit:junit:4.12'
@@ -61,6 +65,23 @@ task generateVersionClass(type: Copy) {
     into 'build/generated-src/main/java/io/realm'
     filter(ReplaceTokens, tokens: [version: version])
     outputs.upToDateWhen { false }
+}
+
+spoon {
+    // for debug output
+    debug = true
+
+    // To run a single test class
+    className = 'fully.qualified.TestCase'
+
+    // To run a single method in TestCase
+    methodName = 'testMyApp'
+
+    // To execute the tests device by device */
+    sequential = true
+
+    // To grant permissions to Android M >= devices */
+    grantAllPermissions = true
 }
 
 // Include the generated Version file

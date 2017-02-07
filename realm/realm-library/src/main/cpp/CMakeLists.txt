@@ -42,10 +42,7 @@ set(classes_LIST
 # /./ is the workaround for the problem that AS cannot find the jni headers.
 # See https://github.com/googlesamples/android-ndk/issues/319
 set(jni_headers_PATH /./${PROJECT_BINARY_DIR}/jni_include)
-if (build_SYNC)
-    list(APPEND classes_LIST
-        io.realm.SyncManager io.realm.internal.objectserver.ObjectServerSession io.realm.RealmFileUserStore)
-endif()
+
 create_javah(TARGET jni_headers
     CLASSES ${classes_LIST}
 

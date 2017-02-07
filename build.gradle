@@ -1,9 +1,27 @@
+apply from: '../dopplversions.gradle'
+
 buildscript {
     repositories {
         jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+        ivy { url dopplIvyDeploy }
+        maven {
+            url 'https://raw.github.com/java-decompiler/mvn-repo/master'
+        }
     }
     dependencies {
         classpath 'ch.netzwerg:gradle-release-plugin:1.2.0'
+        classpath "co.touchlab.doppl:gradle:"+ dopplPluginVersion
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        ivy { url dopplIvyDeploy }
+        maven {
+            url 'https://raw.github.com/java-decompiler/mvn-repo/master'
+        }
     }
 }
 

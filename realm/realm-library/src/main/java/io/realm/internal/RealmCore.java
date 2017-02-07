@@ -18,15 +18,11 @@ package io.realm.internal;
 
 import android.content.Context;
 
-import com.getkeepsafe.relinker.ReLinker;
-
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
-
-import io.realm.BuildConfig;
 
 /**
  * Utility methods for Realm Core.
@@ -58,7 +54,9 @@ public class RealmCore {
         if (libraryIsLoaded) {
             return;
         }
-        ReLinker.loadLibrary(context, "realm-jni", BuildConfig.VERSION_NAME);
+//        ReLinker.loadLibrary(context, "realm-jni", BuildConfig.VERSION_NAME);
+        System.loadLibrary("realm-jni");
+        Util.nativeRealmInit();
         libraryIsLoaded = true;
     }
 

@@ -26,6 +26,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // Initialize Realm. Should only be done once when the application starts.
-        Realm.init(this);
+        AppManager.setAppContext(this);
+        Realm.init(AppManager.getAppContext());
     }
 }

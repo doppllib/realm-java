@@ -2,13 +2,16 @@ import java.security.MessageDigest
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.artifactory'
+//apply plugin: 'maven-publish'
+apply plugin: 'ivy-publish'
+//apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'de.undercouch.download'
+apply plugin: 'co.touchlab.doppl.gradle'
+apply plugin: 'ivy-publish'
 
 def properties = new Properties()
 properties.load(new FileInputStream("${projectDir}/../../dependencies.list"))
@@ -20,7 +23,7 @@ ext.forceDownloadCore =
         project.hasProperty('forceDownloadCore') ? project.getProperty('forceDownloadCore').toBoolean() : false
 // Set the core source code path. By setting this, the core will be built from source. And coreVersion will be read from
 // core source code.
-ext.coreSourcePath = project.hasProperty('coreSourcePath') ? project.getProperty('coreSourcePath') : null
+ext.coreSourcePath = /*project.hasProperty('coreSourcePath') ? project.getProperty('coreSourcePath') :*/ null
 // The location of core archive.
 ext.coreArchiveDir = System.getenv("REALM_CORE_DOWNLOAD_DIR")
 if (!ext.coreArchiveDir) {
@@ -42,7 +45,7 @@ android {
         versionName version
         project.archivesBaseName = "realm-android-library"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
+        /*externalNativeBuild {
             cmake {
                 arguments "-DREALM_CORE_DIST_DIR:STRING=${project.coreDir.getAbsolutePath()}",
                           // FIXME:
@@ -60,14 +63,14 @@ android {
                     abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a', 'mips'
                 }
             }
-        }
+        }*/
     }
 
-    externalNativeBuild {
+    /*externalNativeBuild {
         cmake {
             path 'src/main/cpp/CMakeLists.txt'
         }
-    }
+    }*/
 
     buildTypes {
         debug {
@@ -125,7 +128,7 @@ repositories {
 
 dependencies {
     objectServerAnnotationProcessor project(':realm-annotations-processor')
-    provided 'io.reactivex:rxjava:1.1.0'
+    provided 'io.reactivex:rxjava:1.2.1'
     provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
     compile "io.realm:realm-annotations:${version}"
     compile 'com.getkeepsafe.relinker:relinker:1.2.2'
@@ -140,13 +143,72 @@ dependencies {
     androidTestCompile 'com.opencsv:opencsv:3.4'
     androidTestCompile 'dk.ilios:spanner:0.6.0'
     androidTestAnnotationProcessor project(':realm-annotations-processor')
+
+    provided "co.touchlab.doppl:androidbase:$dopplCoreVersion"
+    testCompile "co.touchlab.doppl:androidbasetest:$dopplCoreVersion"
+
+    doppl "co.touchlab.doppl:androidbase:$dopplCoreVersion:doppl"
+    testDoppl "co.touchlab.doppl:androidbasetest:$dopplCoreVersion:doppl"
+
+    doppl "io.reactivex:rxjava:$dopplRxJavaVersion:doppl"
+    doppl "io.realm:realm-annotations:$dopplRealmVersion:doppl"
+
+    doppl "com.squareup.okhttp3:okhttp:$dopplOkhttpVersion:doppl"
 }
 
+version = dopplRealmVersion
+
+publishing {
+    publications {
+        ivy(IvyPublication) {
+            module 'realm-client'
+            artifact(dopplArchive) {
+                classifier 'doppl'
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        ivy { url dopplIvyDeploy }
+    }
+}
+
+/*publishing {
+    publications {
+        ivy(IvyPublication) {
+            from components.java
+            module 'realm-client'
+            artifact(dopplArchive) {
+                classifier 'doppl'
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        ivy { url dopplIvyDeploy }
+    }
+}*/
+
+dopplConfig {
+
+    copyMainOutput="../iostest/dopplframework/main"
+    copyTestOutput="../iostest/dopplframework/test"
+    copyDependencies true
+
+    /*decompilePattern{
+        include '**//*gson*//**'
+    }*/
+}
+
+/*
 task sourcesJar(type: Jar) {
     from android.sourceSets.objectServer.java.srcDirs
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
 }
+*/
 
 def betaTag = 'Beta:a:<div style="border-style:solid;border-width:2px">This software is considered in beta phase. ' +
         'It indicates that any public interface can change without prior announcements. ' +
@@ -184,10 +246,12 @@ task javadoc(type: Javadoc) {
     }
 }
 
+/*
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+*/
 
 task findbugs(type: FindBugs) {
     dependsOn assemble
@@ -323,7 +387,7 @@ def createPomDependencies(configurationNames) {
 
 publishing {
     publications {
-        basePublication(MavenPublication) {
+        /*basePublication(MavenPublication) {
             groupId 'io.realm'
             artifactId 'realm-android-library'
             version project.version
@@ -332,9 +396,9 @@ publishing {
             artifact javadocJar
 
             pom.withXml(createPomDependencies(["baseCompile", "compile"]))
-        }
+        }*/
 
-        objectServerPublication(MavenPublication) {
+        /*objectServerPublication(MavenPublication) {
             groupId 'io.realm'
             artifactId 'realm-android-library-object-server'
             version project.version
@@ -343,7 +407,7 @@ publishing {
             artifact javadocJar
 
             pom.withXml(createPomDependencies(["objectServerCompile", "compile"]))
-        }
+        }*/
     }
     repositories {
         maven {
@@ -360,7 +424,7 @@ publishing {
     }
 }
 
-artifactory {
+/*artifactory {
     contextUrl = 'https://oss.jfrog.org/artifactory'
     publish {
         repository {
@@ -374,12 +438,12 @@ artifactory {
             publishIvy = false
         }
     }
-}
+}*/
 
-artifacts {
+/*artifacts {
     archives javadocJar
     archives sourcesJar
-}
+}*/
 
 
 def coreDownloaded = false
@@ -444,7 +508,7 @@ task downloadCore() {
     }
 }
 
-task compileCore(group: 'build setup', description: 'Compile the core library from source code') {
+/*task compileCore(group: 'build setup', description: 'Compile the core library from source code') {
     // Build the library from core source code
     doFirst {
         if (!coreSourcePath) {
@@ -468,7 +532,7 @@ task compileCore(group: 'build setup', description: 'Compile the core library fr
             rename "realm-core-android-${coreVersion}.tar.gz", "realm-sync-android-${coreVersion}.tar.gz"
         }
     }
-}
+}*/
 
 task deployCore(group: 'build setup', description: 'Deploy the latest version of Realm Core') {
     dependsOn {
@@ -500,8 +564,8 @@ task deployCore(group: 'build setup', description: 'Deploy the latest version of
     }
 }
 
-publishToMavenLocal.dependsOn assemble
-preBuild.dependsOn deployCore
+//publishToMavenLocal.dependsOn assemble
+//preBuild.dependsOn deployCore
 
 if (project.hasProperty('dontCleanJniFiles')) {
     project.afterEvaluate {
@@ -520,11 +584,11 @@ if (project.hasProperty('dontCleanJniFiles')) {
     clean.dependsOn cleanExternalBuildFiles
 }
 
-project.afterEvaluate {
+/*project.afterEvaluate {
     android.libraryVariants.all { variant ->
         variant.externalNativeBuildTasks[0].dependsOn(checkNdk)
     }
-}
+}*/
 
 task checkNdk() << {
     def ndkPathInEnvVariable = System.env.ANDROID_NDK_HOME
@@ -552,7 +616,7 @@ task checkNdk() << {
     }
 }
 
-android.productFlavors.all { flavor ->
+/*android.productFlavors.all { flavor ->
     def librarySuffix = flavor.name == 'base' ? '' : '-object-server'
     def userName = project.findProperty('bintrayUser') ?: 'noUser'
     def accessKey = project.findProperty('bintrayKey') ?: 'noKey'
@@ -687,14 +751,14 @@ task bintrayUpload() {
         dependsOn "bintray${flavor.name.capitalize()}"
     }
     group = 'Publishing'
-}
+}*/
 
-task ojoUpload() {
+/*task ojoUpload() {
     android.productFlavors.all { flavor ->
         dependsOn "ojo${flavor.name.capitalize()}"
     }
     group = 'Publishing'
-}
+}*/
 
 def checkNdk(String ndkPath) {
     def detectedNdkVersion

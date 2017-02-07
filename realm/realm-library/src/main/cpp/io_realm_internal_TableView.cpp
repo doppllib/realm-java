@@ -514,19 +514,12 @@ JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeFindFirstDouble(
 }
 
 // FIXME: find_first_timestamp() isn't implemented
-/*
 JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeFindFirstDate(
     JNIEnv* env, jobject, jlong nativeViewPtr, jlong columnIndex, jlong dateTimeValue)
 {
-    try {
-        if (!VIEW_VALID_AND_IN_SYNC(env, nativeViewPtr) ||
-            !COL_INDEX_AND_TYPE_VALID(env, TV(nativeViewPtr), columnIndex, type_DateTime))
-            return 0;
-        return to_jlong_or_not_found( TV(nativeViewPtr)->find_first_datetime( S(columnIndex), DateTime(dateTimeValue)) );
-    } CATCH_STD()
+    ThrowException(env, UnsupportedOperation, "Realm peoples didn't make this go");
     return 0;
 }
-*/
 
 JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeFindFirstString(
     JNIEnv* env, jobject, jlong nativeViewPtr, jlong columnIndex, jstring value)
@@ -598,21 +591,12 @@ JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeFindAllDouble(
 }
 
 // FIXME: find_all_timestamp() isn't implemented
-/*
 JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeFindAllDate(
     JNIEnv* env, jobject, jlong nativeViewPtr, jlong columnIndex, jlong dateTimeValue)
 {
-    try {
-        if (!VIEW_VALID_AND_IN_SYNC(env, nativeViewPtr) ||
-            !COL_INDEX_AND_TYPE_VALID(env, TV(nativeViewPtr), columnIndex, type_DateTime))
-            return 0;
-        TableView* pResultView = new TableView( TV(nativeViewPtr)->find_all_datetime( S(columnIndex),
-                                                DateTime(dateTimeValue)) );
-        return reinterpret_cast<jlong>(pResultView);
-    } CATCH_STD()
+    ThrowException(env, UnsupportedOperation, "Realm peoples didn't make this go");
     return 0;
 }
-*/
 
 JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeFindAllString(
     JNIEnv* env, jobject, jlong nativeViewPtr, jlong columnIndex, jstring value)
@@ -962,6 +946,13 @@ JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeSyncIfNeeded(
     try {
         return (jlong) TV(nativeViewPtr)->sync_if_needed();
     } CATCH_STD()
+    return 0;
+}
+
+JNIEXPORT jlong JNICALL Java_io_realm_internal_TableView_nativeSync(
+    JNIEnv* env, jobject, jlong nativeViewPtr)
+{
+    ThrowException(env, UnsupportedOperation, "Realm peoples didn't make this go");
     return 0;
 }
 

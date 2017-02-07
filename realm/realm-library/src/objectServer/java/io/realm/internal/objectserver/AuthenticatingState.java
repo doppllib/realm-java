@@ -19,8 +19,9 @@ package io.realm.internal.objectserver;
 import io.realm.ObjectServerError;
 import io.realm.SyncSession;
 import io.realm.SessionState;
-import io.realm.internal.network.NetworkStateReceiver;
 import io.realm.log.RealmLog;
+
+import android.content.Context;
 
 /**
  * AUTHENTICATING State. This step is needed if the user does not have proper access or credentials to access the
@@ -48,23 +49,28 @@ class AuthenticatingState extends FsmState {
 
     @Override
     public void onEnterState() {
-        if (NetworkStateReceiver.isOnline(SyncObjectServerFacade.getApplicationContext())) {
+        if (isOnline(SyncObjectServerFacade.getApplicationContext())) {
             authenticate(session);
         } else {
             // Wait for connection to become available, before trying again.
             // The Session might potentially stay in this state for the lifetime of the application.
             // This is acceptable.
-            session.networkListener = new NetworkStateReceiver.ConnectionListener() {
-                @Override
-                public void onChange(boolean connectionAvailable) {
-                    if (connectionAvailable) {
-                        authenticate(session);
-                        NetworkStateReceiver.removeListener(this);
-                    }
-                }
-            };
-            NetworkStateReceiver.addListener(session.networkListener);
+//            session.networkListener = new NetworkStateReceiver.ConnectionListener() {
+//                @Override
+//                public void onChange(boolean connectionAvailable) {
+//                    if (connectionAvailable) {
+//                        authenticate(session);
+//                        NetworkStateReceiver.removeListener(this);
+//                    }
+//                }
+//            };
+//            NetworkStateReceiver.addListener(session.networkListener);
         }
+    }
+
+    private boolean isOnline(Context context)
+    {
+        return true;
     }
 
     @Override
@@ -75,11 +81,11 @@ class AuthenticatingState extends FsmState {
             session.networkRequest = null;
         }
 
-        // Release listener if we were waiting for network to become available.
+        /*// Release listener if we were waiting for network to become available.
         if (session.networkListener != null) {
             NetworkStateReceiver.removeListener(session.networkListener);
             session.networkListener = null;
-        }
+        }*/
     }
 
     @Override

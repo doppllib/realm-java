@@ -16,8 +16,6 @@
 
 package io.realm;
 
-import android.app.IntentService;
-
 import io.realm.exceptions.RealmException;
 import io.realm.exceptions.RealmFileException;
 import io.realm.internal.Table;
@@ -132,7 +130,7 @@ public class DynamicRealm extends BaseRealm {
      *
      * @param listener the change listener.
      * @throws IllegalArgumentException if the change listener is {@code null}.
-     * @throws IllegalStateException if you try to register a listener from a non-Looper or {@link IntentService} thread.
+     * @throws IllegalStateException if you try to register a listener from a non-Looper or IntentService thread.
      * @see io.realm.RealmChangeListener
      * @see #removeChangeListener(RealmChangeListener)
      * @see #removeAllChangeListeners()

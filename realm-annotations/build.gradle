@@ -1,26 +1,64 @@
+apply from: '../../dopplversions.gradle'
+
 buildscript {
     repositories {
         jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+        ivy { url dopplIvyDeploy }
+        maven {
+            url 'https://raw.github.com/java-decompiler/mvn-repo/master'
+        }
     }
     dependencies {
         classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath "co.touchlab.doppl:gradle:"+ dopplPluginVersion
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        ivy { url dopplIvyDeploy }
+        maven {
+            url 'https://raw.github.com/java-decompiler/mvn-repo/master'
+        }
     }
 }
 
 apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.artifactory'
-apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'maven'
+//apply plugin: 'maven-publish'
+//apply plugin: 'com.jfrog.artifactory'
+//apply plugin: 'com.jfrog.bintray'
+apply plugin: 'ivy-publish'
+//apply plugin: 'net.ltgt.apt'
+apply plugin: 'co.touchlab.doppl.gradle'
 
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
 
 group = 'io.realm'
-version = file("${projectDir}/../version.txt").text.trim();
+version = dopplRealmVersion
 
-def commonPom = {
+publishing {
+    publications {
+        ivy(IvyPublication) {
+            from components.java
+            module 'realm-annotations'
+            artifact(dopplArchive) {
+                classifier 'doppl'
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        ivy { url dopplIvyDeploy }
+    }
+}
+
+/*def commonPom = {
     licenses {
         license {
             name 'The Apache Software License, Version 2.0'
@@ -37,8 +75,8 @@ def commonPom = {
         connection 'scm:git@github.com:realm/realm-java.git'
         developerConnection 'scm:git@github.com:realm/realm-java.git'
     }
-}
-
+}*/
+/*
 publishing {
     publications {
         realmPublication(MavenPublication) {
@@ -102,4 +140,4 @@ artifactory {
             publications ('realmPublication')
         }
     }
-}
+}*/

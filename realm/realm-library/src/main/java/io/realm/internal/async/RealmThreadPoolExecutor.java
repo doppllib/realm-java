@@ -27,7 +27,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * Custom thread pool settings, instances of this executor can be paused, and resumed, this will also set

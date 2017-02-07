@@ -24,6 +24,7 @@ import com.google.common.io.Files
 import groovy.io.FileType
 import io.realm.annotations.Ignore
 import io.realm.annotations.RealmClass
+import io.realm.spoons.GoTransformer
 import javassist.ClassPool
 import javassist.CtClass
 import javassist.LoaderClassPath

@@ -16,9 +16,6 @@
 
 package io.realm;
 
-
-import android.app.IntentService;
-
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Collections;
@@ -959,7 +956,7 @@ public class RealmResults<E extends RealmModel> extends AbstractList<E> implemen
      *
      * @param listener the change listener to be notified.
      * @throws IllegalArgumentException if the change listener is {@code null}.
-     * @throws IllegalStateException if you try to add a listener from a non-Looper or {@link IntentService} thread.
+     * @throws IllegalStateException if you try to add a listener from a non-Looper or IntentService thread.
      */
     public void addChangeListener(RealmChangeListener<RealmResults<E>> listener) {
         if (listener == null) {

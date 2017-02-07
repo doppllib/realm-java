@@ -71,6 +71,13 @@ JNIEXPORT void JNI_OnUnload(JavaVM* vm, void*)
 }
 
 
+JNIEXPORT void JNICALL Java_io_realm_internal_Util_nativeRealmInit(JNIEnv* env, jclass)
+{
+    JavaVM *g_VM;
+    env->GetJavaVM(&g_VM);
+    JNI_OnLoad(g_VM);
+}
+
 JNIEXPORT jlong JNICALL Java_io_realm_internal_Util_nativeGetMemUsage(JNIEnv*, jclass)
 {
     return GetMemUsage();

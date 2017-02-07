@@ -33,7 +33,6 @@ import io.realm.internal.async.RealmAsyncTaskImpl;
 import io.realm.internal.network.AuthenticateResponse;
 import io.realm.internal.network.AuthenticationServer;
 import io.realm.internal.network.ExponentialBackoffTask;
-import io.realm.internal.network.NetworkStateReceiver;
 import io.realm.internal.syncpolicy.SyncPolicy;
 import io.realm.log.RealmLog;
 
@@ -99,7 +98,6 @@ public final class ObjectServerSession {
     private long nativeSessionPointer;
     private final ObjectServerUser user;
     RealmAsyncTask networkRequest;
-    NetworkStateReceiver.ConnectionListener networkListener;
     private SyncPolicy syncPolicy;
 
     // Keeping track of current FSM state

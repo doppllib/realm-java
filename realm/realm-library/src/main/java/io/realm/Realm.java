@@ -17,7 +17,6 @@
 package io.realm;
 
 import android.annotation.TargetApi;
-import android.app.IntentService;
 import android.content.Context;
 import android.os.Build;
 import android.util.JsonReader;
@@ -1273,7 +1272,7 @@ public class Realm extends BaseRealm {
      *
      * @param listener the change listener.
      * @throws IllegalArgumentException if the change listener is {@code null}.
-     * @throws IllegalStateException if you try to register a listener from a non-Looper or {@link IntentService} thread.
+     * @throws IllegalStateException if you try to register a listener from a non-Looper or IntentService thread.
      * @see io.realm.RealmChangeListener
      * @see #removeChangeListener(RealmChangeListener)
      * @see #removeAllChangeListeners()
