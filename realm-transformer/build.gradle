@@ -1,12 +1,10 @@
 buildscript {
     repositories {
         jcenter()
-        ivy { url dopplIvyDeploy }
     }
     dependencies {
         classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-        classpath 'doppl.fr.inria.gforge.spoon:spoon-gradle-plugin:1.0-SNAPSHOT'
     }
 }
 
@@ -16,7 +14,6 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'spoon'
 
 group = 'io.realm'
 version = file("${projectDir}/../version.txt").text.trim();
@@ -32,7 +29,6 @@ targetCompatibility = '1.6'
 repositories {
     mavenLocal()
     jcenter()
-    ivy { url dopplIvyDeploy }
 }
 
 configurations {
@@ -56,7 +52,7 @@ dependencies {
     compile "io.realm:realm-annotations:${version}"
     provided 'com.android.tools.build:gradle:2.1.0'
     compile 'org.javassist:javassist:3.20.0-GA'
-    compile 'fr.inria.gforge.spoon:spoon-core:5.5.0'
+
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude module: 'groovy-all'
     }

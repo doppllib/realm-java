@@ -41,6 +41,6 @@ class RealmPluginExtension {
 
         // then add again
         def artifactName = "realm-android-library${syncEnabled ? '-object-server' : ''}"
-        project.dependencies.add("compile", "io.realm:${artifactName}:${Version.VERSION}")
+        project.dependencies.add("compile", "io.realm:${artifactName}:2.3.0")
     }
 }

@@ -19,7 +19,6 @@ package io.realm.gradle
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryPlugin
 import com.neenbedankt.gradle.androidapt.AndroidAptPlugin
-import io.realm.transformer.RealmTransformer
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -54,7 +53,7 @@ class Realm implements Plugin<Project> {
             usesAptPlugin = true
         }
 
-        project.android.registerTransform(new RealmTransformer(project))
+//        project.android.registerTransform(new RealmTransformer(project))
 
         project.repositories.add(project.getRepositories().jcenter())
         project.dependencies.add("compile", "io.realm:realm-annotations:${Version.VERSION}")
@@ -74,6 +73,13 @@ class Realm implements Plugin<Project> {
             project.dependencies.add("annotationProcessor", "io.realm:realm-annotations-processor:${Version.VERSION}")
             project.dependencies.add("androidTestAnnotationProcessor", "io.realm:realm-annotations:${Version.VERSION}")
             project.dependencies.add("androidTestAnnotationProcessor", "io.realm:realm-annotations-processor:${Version.VERSION}")
+        }
+
+        project.configure(project){
+            apply plugin: 'spoon-android'
+            spoon {
+                processors = ['io.realm.spoon.RealmSpoonProcessor']
+            }
         }
     }
 
